@@ -12,7 +12,8 @@
        (search-forward "(ns ")
        (move-end-of-line 1)
        (newline-and-indent)
-       (insert imports))
+       (insert imports)
+       (slime-compile-defun))
       (message "Added imports: %s" imports))))
 
 (defun clj-format-import (classes)
