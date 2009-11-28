@@ -25,9 +25,15 @@
   (define-key slime-mode-map (kbd "C-c o") 'swank-clojure-project)
   (define-key clojure-mode-map (kbd "C-c ,") 'ato.clojure/jump-and-run-tests))
 
+(defun ato.paredit/set-key-maps ()
+  (define-key paredit-mode-map (kbd "M-[") 'paredit-wrap-square)
+  (define-key paredit-mode-map (kbd "M-{") 'paredit-wrap-curly))
+
 (add-hook 'slime-repl-mode-hook 'turn-on-paredit)
 (add-hook 'clojure-mode-hook 'turn-on-whitespace)
 (add-hook 'slime-connected-hook 'ato.clojure/set-key-maps)
+(add-hook 'clojure-mode-hook 'ato.paredit/set-key-maps)
+(add-hook 'slime-repl-mode-hook 'ato.paredit/set-key-maps)
 
 ;;
 ;; IRC
