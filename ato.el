@@ -6,8 +6,20 @@
 (zenburn)
 
 (setq visible-bell nil
-      whitespace-line-column 80)
+      whitespace-line-column 80
+      mumamo-chunk-coloring 100) ; disables it
 
+(set-default-font "Inconsolata-12")
+
+;; Retraining
+(defun no-arrows ()
+  (interactive)
+  (message "Arrow keys must die!"))
+
+(define-key global-map (kbd "<right>") 'no-arrows)
+(define-key global-map (kbd "<left>") 'no-arrows)
+(define-key global-map (kbd "<up>") 'no-arrows)
+(define-key global-map (kbd "<down>") 'no-arrows)
 ;;
 ;; Clojure
 ;;
@@ -47,3 +59,8 @@
 (define-key global-map (kbd "M-`") 'erc-track-switch-buffer)
 (setq erc-fill-column 100)
 (setq erc-server "meshy.org" erc-port 57000 erc-nick "_ato")
+
+;;
+;; Emacs server
+;;
+(server-mode t)
