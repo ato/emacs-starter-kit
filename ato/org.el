@@ -1,0 +1,5 @@
+(setq load-path (cons "~/.emacs.d/ato/org/lisp" load-path))
+(setq org-mobile-directory "/scpc:ato@meshy.org:/var/www/dav.meshy.org/htdocs/org/")
+(setq org-mobile-inbox-for-pull "~/doc/org/mobile.org")
+(setq org-directory "~/doc/org")
+(require 'org-install)

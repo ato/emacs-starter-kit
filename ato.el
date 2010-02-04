@@ -9,7 +9,8 @@
       whitespace-line-column 80
       mumamo-chunk-coloring 100) ; disables it
 
-(set-default-font "Inconsolata-12")
+(unless (boundp 'ato-loaded)
+ (set-default-font "Inconsolata-12"))
 
 ;; Retraining
 (defun no-arrows ()
@@ -35,6 +36,8 @@
   (define-key slime-mode-map (kbd "C-c q") 'slime-quit-lisp)
   (define-key slime-mode-map (kbd "C-c C-o") 'swank-clojure-project)
   (define-key slime-mode-map (kbd "C-c o") 'swank-clojure-project)
+  (define-key slime-mode-map (kbd "C-c p") 'slime-eval-print-last-expression)
+  (define-key slime-mode-map (kbd "C-c C-p") 'slime-eval-print-last-expression)
   (define-key clojure-mode-map (kbd "C-c ,") 'ato.clojure/jump-and-run-tests))
 
 (defun ato.paredit/set-key-maps ()
@@ -58,8 +61,8 @@
 ;(add-hook 'erc-mode-hook (lambda () (auto-fill-mode -1)))
 (define-key global-map (kbd "M-`") 'erc-track-switch-buffer)
 (setq erc-fill-column 100)
-(setq erc-server "meshy.org" erc-port 57000 erc-nick "_ato")
-
+(unless (boundp 'ato-loaded)
+  (setq erc-server "meshy.org" erc-port 57000 erc-nick "_ato"))
 ;;
 ;; Emacs server
 ;;
