@@ -1,3 +1,12 @@
+(defun pretty-seconds (seconds)
+  (let* ((hours (truncate (/ seconds 60 60)))
+         (minutes (truncate (/ (- seconds (* hours 60 60))
+                               60)))
+         (seconds (- seconds
+                     (* hours 60 60)
+                     (* minutes 60))))
+    (format "%.2d:%.2d:%.2d" hours minutes seconds)))
+
 (defun read-datetime (prompt &optional nodefault)
   (let ((input (read-from-minibuffer
                 (format "%s (DD/MM/YY HH:MM:SS): " prompt)
@@ -11,8 +20,6 @@
         (mapcar 'string-to-number (split-string input "[ /:]"))
       (list input
             (time-to-seconds (encode-time sec min hour day month year))))))
-
-
 
 (defun incident-report (subject start-time end-time
                                 &optional defaults)
