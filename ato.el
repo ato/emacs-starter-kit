@@ -44,11 +44,15 @@
   (define-key paredit-mode-map (kbd "M-[") 'paredit-wrap-square)
   (define-key paredit-mode-map (kbd "M-{") 'paredit-wrap-curly))
 
+(defun ato.swank-clojure/add-project-resources ()
+  (add-to-list 'swank-clojure-classpath (expand-file-name "resources/" path)))
+
 (add-hook 'slime-repl-mode-hook 'turn-on-paredit)
 (add-hook 'clojure-mode-hook 'turn-on-whitespace)
 (add-hook 'slime-connected-hook 'ato.clojure/set-key-maps)
 (add-hook 'clojure-mode-hook 'ato.paredit/set-key-maps)
 (add-hook 'slime-repl-mode-hook 'ato.paredit/set-key-maps)
+(add-hook 'swank-clojure-project-hook 'ato.swank-clojure/add-project-resources)
 
 ;;
 ;; IRC
