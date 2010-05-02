@@ -12,17 +12,16 @@
 (unless (boundp 'ato-loaded)
  (set-default-font "Inconsolata-12"))
 
-;; Retraining
-(defun no-arrows ()
-  (interactive)
-  (message "Arrow keys must die!"))
-
-(define-key global-map (kbd "<right>") 'no-arrows)
-(define-key global-map (kbd "<left>") 'no-arrows)
-(define-key global-map (kbd "<up>") 'no-arrows)
-(define-key global-map (kbd "<down>") 'no-arrows)
-
 (define-key global-map (kbd "<f9>") 'gnus)
+
+;; Retraining
+;; (defun no-arrows ()
+;;   (interactive)
+;;   (message "Arrow keys must die!"))
+;; (define-key global-map (kbd "<right>") 'no-arrows)
+;; (define-key global-map (kbd "<left>") 'no-arrows)
+;; (define-key global-map (kbd "<up>") 'no-arrows)
+;; (define-key global-map (kbd "<down>") 'no-arrows)
 
 ;;
 ;; Clojure
@@ -47,11 +46,15 @@
   (define-key paredit-mode-map (kbd "M-[") 'paredit-wrap-square)
   (define-key paredit-mode-map (kbd "M-{") 'paredit-wrap-curly))
 
+(defun ato.swank-clojure/add-project-resources ()
+  (add-to-list 'swank-clojure-classpath (expand-file-name "resources/" path)))
+
 (add-hook 'slime-repl-mode-hook 'turn-on-paredit)
 (add-hook 'clojure-mode-hook 'turn-on-whitespace)
 (add-hook 'slime-connected-hook 'ato.clojure/set-key-maps)
 (add-hook 'clojure-mode-hook 'ato.paredit/set-key-maps)
 (add-hook 'slime-repl-mode-hook 'ato.paredit/set-key-maps)
+(add-hook 'swank-clojure-project-hook 'ato.swank-clojure/add-project-resources)
 
 ;;
 ;; IRC
@@ -76,3 +79,46 @@
 ;;
 
 ;(cperl-set-style "BSD")
+
+;;
+;; Gnus
+;;
+(require 'gnus)
+(require 'message)
+
+;; more stuff borrowed from Mark
+
+(add-hook 'message-send-hook 'message-move-parts-to-bottom t nil)
+
+(defun message-move-parts-to-bottom ()
+  "Move <#part ..> tags to the bottom of the buffer (after the signature)"
+  (interactive)
+  (message-goto-body)
+  (unless (looking-at "<#multipart type=digest>")
+    (previous-line 1)
+    (let ((temp-buffer (get-buffer-create
+                        (generate-new-buffer-name " *temp*"))))
+      (while (not (save-excursion (end-of-line) (eobp)))
+        (if (or (looking-at "<#part.*disposition=\\(attachment\\|inline\\)")
+                (looking-at "<#/part"))
+            (let ((start (line-beginning-position))
+                  (end (line-end-position))
+                  (buf (current-buffer)))
+              (with-current-buffer temp-buffer
+                (insert-buffer-substring buf start end))
+              (delete-region start end)
+              (delete-blank-lines))
+          (next-line 1)))
+      (newline)
+      (insert-buffer temp-buffer)
+      (kill-buffer temp-buffer)
+      (save-excursion
+        (goto-char (point-max))
+        (delete-blank-lines)))))
+
+(add-hook 'message-send-hook 'message-mst-confirm t nil)
+
+(defun message-mst-confirm ()
+  (unless message-mst-suppress-confirm
+    (unless (y-or-n-p "Send this message? ")
+      (signal 'quit nil))))
