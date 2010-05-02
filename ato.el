@@ -21,6 +21,9 @@
 (define-key global-map (kbd "<left>") 'no-arrows)
 (define-key global-map (kbd "<up>") 'no-arrows)
 (define-key global-map (kbd "<down>") 'no-arrows)
+
+(define-key global-map (kbd "<f9>") 'gnus)
+
 ;;
 ;; Clojure
 ;;
@@ -67,3 +70,9 @@
 ;; Emacs server
 ;;
 (server-mode t)
+
+;;
+;; Perl
+;;
+
+;(cperl-set-style "BSD")

@@ -32,7 +32,7 @@
     s))
 
 
-(defvar *nagios-status-log* "http://monitor-prod.nla.gov.au/status.log")
+(defvar *nagios-status-log* "http://www-devel.nla.gov.au/cgi-bin/nagios.cgi")
 
 (defvar *nagios-dot-colours* '(("orange"      . "#FF9900")
                                ("dark-orange" . "#E86400")
